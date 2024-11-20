@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Robot: Teleop Tank", group="Robot")
 
-public class RobotTeleopTank_Iterative1 extends OpMode {
+public class RobotTeleopTank_Iterative extends OpMode {
 
 
     /* Declare OpMode members. */
@@ -94,8 +94,7 @@ public class RobotTeleopTank_Iterative1 extends OpMode {
         telemetry.addData(">", "Robot Ready.  Press START.");    //
     }
 
-    /*
-  
+
     @Override
     public void init_loop() {
     }
@@ -119,22 +118,22 @@ public class RobotTeleopTank_Iterative1 extends OpMode {
         rightDrive.setPower(right);
 
        
-        if (gamepad1.dpad_left)
+        if (gamepad2.dpad_left)
             wrist.setPosition(0);
-        else if (gamepad1.dpad_right)
+        else if (gamepad2.dpad_right)
             wrist.setPosition(1);
         else
             pivot.setPower(0.0);
-        if (gamepad1.dpad_up)
+        if (gamepad2.dpad_up)
             pivot.setPower(ARM_UP_POWER);
-        else if (gamepad1.dpad_down)
+        else if (gamepad2.dpad_down)
             pivot.setPower(ARM_DOWN_POWER);
         else
             pivot.setPower(0.0);
 
-        if (gamepad1.y)
+        if (gamepad2.y)
             slide.setPower(ARM_UP_POWER);
-        else if (gamepad1.a)
+        else if (gamepad2.a)
             slide.setPower(ARM_DOWN_POWER);
         else
             slide.setPower(0.0);
