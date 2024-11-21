@@ -1,0 +1,61 @@
+@startuml
+
+class Robot{}
+
+class DriveTrain{
+
+void Drive(int x, int y)
+
+}
+
+class Arm{
+
+   void SetArmLength(int length)
+}
+
+class Intake{
+
+    void Intake()
+
+	void Out-take()
+
+	void IntakeOff()
+
+}
+
+class Wrist{
+
+    void WristUp()
+
+    void WristDown()
+
+    void WristLeft()
+
+    void WristRight()
+
+}
+
+class Pivot{
+
+    void SetArmPosition(int angle)
+
+}
+
+class Climber{
+void ReleaseServo()
+void RetractWinch()
+}
+
+Robot *-- DriveTrain
+
+Robot *-- Arm
+
+Arm *-- Pivot
+
+Arm *-- Climber
+
+Arm *-- Wrist
+
+Wrist *-- Intake
+
+@enduml
