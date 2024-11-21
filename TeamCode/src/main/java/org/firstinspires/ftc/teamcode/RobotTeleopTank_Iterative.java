@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 /*
  * This OpMode executes a Tank Drive control TeleOp a direct drive robot
@@ -58,6 +59,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public DcMotor rightDrive = null;
     public DcMotor slide = null;
     public DcMotor pivot = null;
+    public CRServo intake = null;
  
     double clawOffset = 0;
 
@@ -76,6 +78,8 @@ public class RobotTeleopTank_Iterative extends OpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left");
         rightDrive = hardwareMap.get(DcMotor.class, "right");
         slide = hardwareMap.get(DcMotor.class, "LinearSlide");
+        intake = hardwareMap.get(CRServo.class, "intake");
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -138,10 +142,17 @@ public class RobotTeleopTank_Iterative extends OpMode {
         else
             slide.setPower(0.0);
 
+        if (gamepad2.start)
+            intake.setPower(1);
+        else if (gamepad2.back)
+            intake.setPower(-1);
+        else
+            intake.setPower(0);
+
         
     }
 
- 
+
     @Override
     public void stop() {
     }
