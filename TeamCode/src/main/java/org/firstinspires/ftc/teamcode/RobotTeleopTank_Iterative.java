@@ -60,6 +60,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public DcMotor slide = null;
     public DcMotor pivot = null;
     public CRServo intake = null;
+    public Servo elbow = null;
  
     double clawOffset = 0;
 
@@ -79,7 +80,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
         rightDrive = hardwareMap.get(DcMotor.class, "right");
         slide = hardwareMap.get(DcMotor.class, "LinearSlide");
         intake = hardwareMap.get(CRServo.class, "intake");
-
+        elbow = hardwareMap.get(Servo.class, "elbow");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -134,6 +135,12 @@ public class RobotTeleopTank_Iterative extends OpMode {
             pivot.setPower(ARM_DOWN_POWER);
         else
             pivot.setPower(0.0);
+        if (gamepad2.b)
+            elbow.setPosition(0);
+        else if (gamepad2.x)
+            elbow.setPosition(1);
+        else
+            elbow.setPosition(.55);
 
         if (gamepad2.y)
             slide.setPower(ARM_UP_POWER);
