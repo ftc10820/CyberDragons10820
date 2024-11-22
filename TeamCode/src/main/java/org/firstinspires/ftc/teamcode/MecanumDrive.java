@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class MecanumDrive implements Drivetrain{
 
     public DcMotorEx frontLeft;
-    public DcMotorEx frontRight;åÍ
+    public DcMotorEx frontRight;
     public DcMotorEx backLeft;
     public DcMotorEx backRight;
 
