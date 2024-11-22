@@ -173,9 +173,9 @@ public class RobotTeleopTank_Iterative extends OpMode {
             slide.setPower(0.0);
 
 
-        if (gamepad2.start)
+        if (gamepad2.b)
             intake.setPower(1);
-        else if (gamepad2.back)
+        else if (gamepad2.x)
             intake.setPower(-1);
         else
             intake.setPower(0);
