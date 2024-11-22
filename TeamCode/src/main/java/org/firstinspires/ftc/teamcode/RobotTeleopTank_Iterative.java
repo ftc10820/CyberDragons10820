@@ -74,14 +74,21 @@ public class RobotTeleopTank_Iterative extends OpMode {
     @Override
     public void init() {
         // Define and Initialize Motors
-        wrist = hardwareMap.get(Servo.class,"wrist");
-        pivot = hardwareMap.get(DcMotor.class, "pivot");
-        leftDrive = hardwareMap.get(DcMotor.class, "left");
-        rightDrive = hardwareMap.get(DcMotor.class, "right");
-        slide = hardwareMap.get(DcMotor.class, "LinearSlide");
-        intake = hardwareMap.get(CRServo.class, "intake");
-        elbow = hardwareMap.get(Servo.class, "elbow");
+       try {
+           wrist = hardwareMap.get(Servo.class, "wrist");
+           pivot = hardwareMap.get(DcMotor.class, "pivot");
+           leftDrive = hardwareMap.get(DcMotor.class, "left");
+           rightDrive = hardwareMap.get(DcMotor.class, "right");
+           slide = hardwareMap.get(DcMotor.class, "LinearSlide");
+           intake = hardwareMap.get(CRServo.class, "intake");
+           elbow = hardwareMap.get(Servo.class, "elbow");
 
+           //Set wrist to start position
+           wrist.setPosition(.5);
+           elbow.setPosition(.65);
+       }catch (Exception e){
+
+       }
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -112,35 +119,51 @@ public class RobotTeleopTank_Iterative extends OpMode {
     
     @Override
     public void loop() {
-        double left;
-        double right;
+        double leftGP1;
+        double rightGP1;
+
+        double leftGP2;
+        double rightGP2;
 
      
-        left = -gamepad1.left_stick_y;
-        right = -gamepad1.right_stick_y;
+        leftGP1 = -gamepad1.left_stick_y;
+        rightGP1 = -gamepad1.right_stick_y;
 
-        leftDrive.setPower(left);
-        rightDrive.setPower(right);
+        leftGP2 = gamepad2.left_stick_y;
+        rightGP2 = gamepad2.right_stick_y;
 
-       
-        if (gamepad2.dpad_left)
-            wrist.setPosition(0);
-        else if (gamepad2.dpad_right)
-            wrist.setPosition(1);
-        else
-            pivot.setPower(0.0);
-        if (gamepad2.dpad_up)
+        leftDrive.setPower(leftGP1);
+        rightDrive.setPower(rightGP1);
+
+        pivot.setPower(leftGP2);
+        slide.setPower(rightGP2);
+
+       //Gamepad 2 controls
+
+        if (gamepad2.dpad_left){
+            //wrist.setPosition(0);
+            wrist.setPosition(wrist.getPosition()-.001);
+            }
+        else if (gamepad2.dpad_right) {
+            //wrist.setPosition(1);
+            wrist.setPosition(wrist.getPosition() + .001);
+        }
+
+
+        /*if (gamepad2.dpad_up)
             pivot.setPower(ARM_UP_POWER);
         else if (gamepad2.dpad_down)
             pivot.setPower(ARM_DOWN_POWER);
         else
             pivot.setPower(0.0);
-        if (gamepad2.b)
-            elbow.setPosition(0);
-        else if (gamepad2.x)
-            elbow.setPosition(1);
-        else
-            elbow.setPosition(.55);
+         */
+        if (gamepad2.dpad_up){
+            elbow.setPosition(elbow.getPosition()-.001);
+        }
+        else if (gamepad2.dpad_down) {
+            elbow.setPosition(elbow.getPosition() + .001);
+        }
+
 
         if (gamepad2.y)
             slide.setPower(ARM_UP_POWER);
@@ -148,6 +171,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
             slide.setPower(ARM_DOWN_POWER);
         else
             slide.setPower(0.0);
+
 
         if (gamepad2.start)
             intake.setPower(1);
