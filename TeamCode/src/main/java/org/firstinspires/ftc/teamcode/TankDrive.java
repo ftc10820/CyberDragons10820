@@ -28,13 +28,20 @@ public class TankDrive implements Drivetrain{
      */
     @Override
     public void move(double x, double y) {
-        
-        left.setPower(y);
-        right.setPower(y);
-    }
+        final double THRESHHOLD = .3;
+        if (x < THRESHHOLD && x > -THRESHHOLD) {
+            left.setPower(y);
+            right.setPower(y);
+        } else if (y < THRESHHOLD && y > -THRESHHOLD) {
+            left.setPower(x);
+            right.setPower(-x);
+        } else{
 
+        }
+    }
     @Override
     public void stop() {
-
+        left.setPower(0);
+        right.setPower(0);
     }
 }
