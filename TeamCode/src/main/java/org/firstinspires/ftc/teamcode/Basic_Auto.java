@@ -56,11 +56,14 @@ public class Basic_Auto extends LinearOpMode {
         leftDrive = hardwareMap.get(DcMotor.class, "left");
         rightDrive = hardwareMap.get(DcMotor.class, "right");
 
+        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+
         waitForStart();
-        sleep(20000);
-        leftDrive.setPower(1);
-        rightDrive.setPower(1);
-        sleep(3000);
+        //sleep(20000);
+        leftDrive.setPower(.75);
+        rightDrive.setPower(.75);
+        sleep(1000);
         rightDrive.setPower(0);
         leftDrive.setPower(0);
     }
