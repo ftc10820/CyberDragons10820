@@ -22,31 +22,11 @@ public class Robot {
 //Adders for the hashmaps
 
 
-    public void forward() throws Exception {
-        if(driveTrain != null) {
-            driveTrain.forward();
-        }else{
-            throw new Exception("No drive train set in robot | Set drive train after instantiating");
-        }
+    void move (double x, double y) throws Exception{
+        driveTrain.move;
+    }
+    void stop() throws Exception{
 
     }
-    public void forward(double speed) throws Exception{
-        if(driveTrain != null) {
-            driveTrain.forward();
-        }else{
-            throw new Exception("No drive train set in robot | Set drive train after instantiating");
-        }
-    }
-    public void forward(int or double speed, int time){}
-        if(driverTrain != null){
-            driveTrain.forward(speed, time);
-        }else{
-            //error notifying that there is no drivetrain set
-        }
-    }
-
-    public void forward(int or double distance);
-
-    public void back(int or double speed);
 
 }
