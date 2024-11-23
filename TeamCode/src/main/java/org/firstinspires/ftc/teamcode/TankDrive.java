@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 public class TankDrive implements Drivetrain{
-    //When you call new TankDrive it activates this, the constructor first, you can overload it too.
-    public TankDrive (){
-        public DcMotorEx left;
-        public DcMotorEx right;
+    public DcMotor left;
+    public DcMotor right;
 
+    //When you call new TankDrive it activates this, the constructor first, you can overload it too.
+    //Initiates the movement motors
+    public TankDrive (){
         left = hardwareMap.get(DcMotor.class, "left");
         right = hardwareMap.get(DcMotor.class, "right");
     }
@@ -18,10 +21,16 @@ public class TankDrive implements Drivetrain{
 
     //MAX_SPEED used if the max speed is too fast.
     final private float MAX_SPEED = 1;
-
+    /*
+    *If x = 0 all wheels = y
+    * If y = 0, each wheel is x is opposite direction (rotate)
+    * If neither of them are 0, then
+     */
     @Override
     public void move(double x, double y) {
-
+        
+        left.setPower(y);
+        right.setPower(y);
     }
 
     @Override
