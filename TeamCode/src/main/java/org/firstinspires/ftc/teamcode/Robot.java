@@ -23,10 +23,12 @@ public class Robot {
 
 
     void move (double x, double y) throws Exception{
-        driveTrain.move;
+        driveTrain.move(x,y);
+        throw new Exception("You need to put what type of drive train is needed");
     }
     void stop() throws Exception{
-
+        driveTrain.stop();
+        throw new Exception("You need to put what type of drive train is needed");
     }
 
 }

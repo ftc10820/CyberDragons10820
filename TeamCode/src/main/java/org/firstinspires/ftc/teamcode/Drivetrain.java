@@ -3,12 +3,8 @@ package org.firstinspires.ftc.teamcode;
 
 public interface Drivetrain {
 
-    move(double x, double y){
-
-    }
-    stop(){
-
-    }
+    public void move(double x, double y);
+    public void stop();
 }
 
 
