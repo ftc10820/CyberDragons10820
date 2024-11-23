@@ -84,8 +84,8 @@ public class RobotTeleopTank_Iterative extends OpMode {
            elbow = hardwareMap.get(Servo.class, "elbow");
 
            //Set wrist to start position
-           wrist.setPosition(.5);
-           elbow.setPosition(.65);
+           //wrist.setPosition(.5);
+           //elbow.setPosition(.65);
        }catch (Exception e){
 
        }
@@ -158,10 +158,10 @@ public class RobotTeleopTank_Iterative extends OpMode {
             pivot.setPower(0.0);
          */
         if (gamepad2.dpad_up){
-            elbow.setPosition(elbow.getPosition()-.001);
+            elbow.setPosition(elbow.getPosition() + .001);
         }
         else if (gamepad2.dpad_down) {
-            elbow.setPosition(elbow.getPosition() + .001);
+            elbow.setPosition(elbow.getPosition() - .001);
         }
 
 
@@ -180,7 +180,18 @@ public class RobotTeleopTank_Iterative extends OpMode {
         else
             intake.setPower(0);
 
-        
+        if(gamepad2.left_bumper){
+            wrist.setPosition(.5);
+            elbow.setPosition(.65);
+        } else if (gamepad2.right_bumper) {
+            wrist.setPosition(0);
+            elbow.setPosition(1);
+            //while(elbow.getPosition() < 1){
+            //    elbow.setPosition(elbow.getPosition() + .001);
+            //}
+
+        }
+
     }
 
 
