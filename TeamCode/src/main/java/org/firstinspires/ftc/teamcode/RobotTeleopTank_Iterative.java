@@ -130,7 +130,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
 
      
         leftGP1 = -gamepad1.left_stick_x;
-        rightGP1 = -gamepad1.left_stick_y;
+        rightGP1 = -gamepad1.right_stick_y;
 
         leftGP2 = gamepad2.left_stick_y;
         rightGP2 = gamepad2.right_stick_y;
