@@ -64,6 +64,9 @@ public class RobotTeleopTank_Iterative extends OpMode {
  
     double clawOffset = 0;
 
+    public DcMotor getPivot() {
+        return pivot;
+    }
 
     public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
     public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
@@ -165,13 +168,13 @@ public class RobotTeleopTank_Iterative extends OpMode {
         }
 
 
-        if (gamepad2.y)
+        /*if (gamepad2.y)
             slide.setPower(ARM_UP_POWER);
         else if (gamepad2.a)
             slide.setPower(ARM_DOWN_POWER);
         else
             slide.setPower(0.0);
-
+        */
 
         if (gamepad2.b)
             intake.setPower(1);
