@@ -65,8 +65,8 @@ public class RobotTeleopTank_Iterative extends OpMode {
     double clawOffset = 0;
 
 
-    public static final double ARM_UP_POWER = .5;   // Run arm motor up at 100% power
-    public static final double ARM_DOWN_POWER = -.5;   // Run arm motor down at -20% power
+    public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
+    public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
 
     /*
      * Code to run ONCE when the driver hits INIT
