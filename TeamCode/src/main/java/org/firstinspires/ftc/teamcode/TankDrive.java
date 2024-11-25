@@ -1,3 +1,5 @@
+//TODO: Unfinished | Not used this year, if needed later use this class.
+
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
@@ -39,6 +41,12 @@ public class TankDrive implements Drivetrain{
 
         }
     }
+
+    @Override
+    public void rotate(double x, double y) {
+
+    }
+
     @Override
     public void stop() {
         left.setPower(0);
