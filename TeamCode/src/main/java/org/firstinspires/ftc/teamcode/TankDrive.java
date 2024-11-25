@@ -24,27 +24,23 @@ public class TankDrive implements Drivetrain{
     //MAX_SPEED used if the max speed is too fast.
     final private float MAX_SPEED = 1;
     /*
-    *If x = 0 all wheels = y
+    * If x = 0 all wheels = y
     * If y = 0, each wheel is x is opposite direction (rotate)
     * If neither of them are 0, then
      */
     @Override
     public void move(double x, double y) {
-        final double THRESHHOLD = .3;
-        if (x < THRESHHOLD && x > -THRESHHOLD) {
-            left.setPower(y);
-            right.setPower(y);
-        } else if (y < THRESHHOLD && y > -THRESHHOLD) {
-            left.setPower(x);
-            right.setPower(-x);
-        } else{
-
-        }
+        y = -y;
+        left.setPower(Math.max(-1,  Math.min(1, (y + x))));
+        right.setPower(Math.max(-1,  Math.min(1, (y - x))));
     }
-
+    /*
+     * Listen to only X,
+     */
     @Override
     public void rotate(double x, double y) {
-
+        left.setPower(-x);
+        right.setPower(x);
     }
 
     @Override
