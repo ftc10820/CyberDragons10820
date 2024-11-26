@@ -1,7 +1,13 @@
 @startuml
 
-class Robot{}
+package org.firstinspires.ftc.teamcode {
+class Robot << Singleton >> {
+    DriveTrain getDriveTrain()
+    Arm getArm()
+    Climber getClimber()
+}
 
+package org.firstinspires.ftc.teamcode.subsystem {
 class DriveTrain{
 
 void Drive(int x, int y)
@@ -11,13 +17,16 @@ void Drive(int x, int y)
 class Arm{
 
    void SetArmLength(int length)
+   Pivot getPivot()
+   Wrist getWrist()
+   Intake getIntake()
 }
 
 class Intake{
 
     void Intake()
 
-	void Out-take()
+	void Outtake()
 
 	void IntakeOff()
 
@@ -57,5 +66,72 @@ Arm *-- Climber
 Arm *-- Wrist
 
 Wrist *-- Intake
+}
 
+package org.firstinspires.ftc.teamcode.command {
+class EjectPiece {
+    void run()
+}
+
+class AlignWithSubmersible {
+    void run()
+}
+
+class PickUpPiece {
+    void run()
+}
+
+class RetractArmFromSubmersible {
+    void run()
+}
+
+class AlignWithBasket {
+    void run()
+}
+
+class PlacePieceInBasket {
+    void run()
+}
+
+class AlignForClimb {
+    void run()
+}
+
+class Climb {
+    void run()
+}
+
+class Drive {
+    void run()
+}
+
+Runnable <|-[dashed]- PickUpPiece
+PickUpPiece -- Arm
+Runnable <|-[dashed]- EjectPiece
+EjectPiece -- Arm
+Runnable <|-[dashed]- AlignWithSubmersible
+AlignWithSubmersible -- DriveTrain
+AlignWithSubmersible -- Arm
+AlignWithSubmersible -- Vision
+Runnable <|-[dashed]- RetractArmFromSubmersible
+RetractArmFromSubmersible -- Drive
+RetractArmFromSubmersible -- Arm
+Runnable <|-[dashed]- AlignWithBasket
+AlignWithBasket -- DriveTrain
+AlignWithBasket -- Arm
+AlignWithBasket -- Vision
+Runnable <|-[dashed]- PlacePieceInBasket
+PlacePieceInBasket -- Arm
+Runnable <|-[dashed]- AlignForClimb
+AlignForClimb -- Arm
+AlignForClimb -- Climber
+AlignForClimb -- DriveTrain
+Runnable <|-[dashed]- Climb
+AlignForClimb -- Climber
+AlignForClimb -- DriveTrain
+Runnable <|-[dashed]- Drive
+Drive -- DriveTrain
+
+}
+}
 @enduml
