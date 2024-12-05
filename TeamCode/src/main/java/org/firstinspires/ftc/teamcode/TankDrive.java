@@ -11,13 +11,18 @@ public class TankDrive implements Drivetrain{
 
     //When you call new TankDrive it activates this, the constructor first, you can overload it too.
     //Initiates the movement motors
-    public TankDrive (){
-        left = hardwareMap.get(DcMotor.class, "left");
-        right = hardwareMap.get(DcMotor.class, "right");
+    public TankDrive (String leftMotor, String righMotor){
+        left = hardwareMap.get(DcMotor.class, leftMotor);
+        right = hardwareMap.get(DcMotor.class, righMotor);
     }
 
+    /* prevent the use of a no argument constructor
+     *
+     *
+     */
+    private TankDrive(){
 
-
+    }
 
     //MAX_SPEED used if the max speed is too fast.
     final private float MAX_SPEED = 1;

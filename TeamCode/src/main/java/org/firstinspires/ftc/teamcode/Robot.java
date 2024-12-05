@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
@@ -10,24 +12,17 @@ public class Robot {
     private HashMap<String, Vision> visions;
     private HashMap<String, Sensor> sensors = new HashMap<>();
     //private Graber graber;
-    private Extender extender;
 
     //Setters and getters
     //DRIVETRAIN
-    public void setDriveTrain(Drivetrain drivetrainType){
-        driveTrain = drivetrainType;
+    public void setDriveTrain(Drivetrain driveTrain){
+        this.driveTrain = driveTrain;
     }
     public Drivetrain getDriveTrain(){
         return driveTrain;
     }
 
-    //EXTENDER
-    public void setExtender(Extender extenderType){
-        extender = extenderType;
-    }
-    public Extender getExtender(){
-        return extender;
-    }
+
 
     //SENSOR
     public void setSensor(String key, Sensor sensorType){
@@ -49,87 +44,46 @@ public class Robot {
     //Adders for the hashmaps
 
     //DRIVETRAIN FUNCTIONS
-    public void move (double x, double y) throws Exception{
+    public void move (double x, double y) {
         if(getDriveTrain() == null){
-            throw new Exception("No drive train found | Add drive train type");
+            telemetry.addLine("No drive train found | Add drive train type");
+            telemetry.update();
         }else{
             driveTrain.move(x,y);
         }
     }
-    public void rotate (double x, double y) throws Exception{
+    public void rotate (double x, double y) {
         if(getDriveTrain() == null){
-            throw new Exception("No drive train found | Add drive train type");
+            telemetry.addLine("No drive train found | Add drive train type");
+            telemetry.update();
         }else{
             driveTrain.rotate(x,y);
         }
     }
-    public void stop () throws Exception{
+    public void stop () {
         if(getDriveTrain() == null){
-            throw new Exception("No drive train found | Add drive train type");
+            telemetry.addLine("No drive train found | Add drive train type");
+            telemetry.update();
         }else{
             driveTrain.stop();
         }
     }
 
-    //EXTENDER FUNCTIONS
-
-    public void up(double speed) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.up(speed);
-        }
-    }
-    public void up(double speed, double distance) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.up(speed, distance);
-        }
-    }
-    public void up(double speed, int time) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.up(speed, time);
-        }
-    }
-
-    public void down(double speed) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.down(speed);
-        }
-    }
-    public void down(double speed, double distance) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.down(speed, distance);
-        }
-    }
-    public void down(double speed, int time) throws Exception{
-        if(getDriveTrain() == null){
-            throw new Exception("No extender found | Add extender type");
-        }else{
-            extender.down(speed, time);
-        }
-    }
-
     //SENSOR FUNCTIONS
-    public void sense (String key) throws Exception{
+    public void sense (String key) {
         if(getSensor(key) == null){
-            throw new Exception("No sensor found in hashmap | Make sure you have the right key");
+            telemetry.addLine("No sensor found | Add sensor type");
+            telemetry.update();
         }else{
             sensors.get(key).sense();
         }
     }
 
     //VISION FUNCTIONS
-    public void see(String key) throws Exception{
+    public void see(String key) {
         if(getSensor(key) == null){
-            throw new Exception("No camera found i  n hashmap | Make sure you have the right key");
+            telemetry.addLine("No camera found | Add camera type");
+            telemetry.update();
         }else{
             visions.get(key).see();
         }

@@ -48,7 +48,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Robot: Teleop Tank", group="Robot")
+@TeleOp(name="Robot: Teleop Tank (Object Oriented Test)", group="Robot")
 
 public class RobotTeleopTank_Iterative extends OpMode {
 
@@ -61,34 +61,40 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public DcMotor pivot = null;
     public CRServo intake = null;
     public Servo elbow = null;
- 
+
     double clawOffset = 0;
 
+    public DcMotor getPivot() {
+        return pivot;
+    }
 
-    public static final double ARM_UP_POWER = .5;   // Run arm motor up at 100% power
-    public static final double ARM_DOWN_POWER = -.5;   // Run arm motor down at -20% power
+    public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
+    public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
 
+    //"Building" the robot
+    Robot robot = new Robot();
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
         // Define and Initialize Motors
-       try {
-           wrist = hardwareMap.get(Servo.class, "wrist");
-           pivot = hardwareMap.get(DcMotor.class, "pivot");
-           leftDrive = hardwareMap.get(DcMotor.class, "left");
-           rightDrive = hardwareMap.get(DcMotor.class, "right");
-           slide = hardwareMap.get(DcMotor.class, "LinearSlide");
-           intake = hardwareMap.get(CRServo.class, "intake");
-           elbow = hardwareMap.get(Servo.class, "elbow");
+        try {
+            wrist = hardwareMap.get(Servo.class, "wrist");
+            pivot = hardwareMap.get(DcMotor.class, "pivot");
+            leftDrive = hardwareMap.get(DcMotor.class, "left");
+            rightDrive = hardwareMap.get(DcMotor.class, "right");
+            slide = hardwareMap.get(DcMotor.class, "LinearSlide");
+            intake = hardwareMap.get(CRServo.class, "intake");
+            elbow = hardwareMap.get(Servo.class, "elbow");
 
-           //Set wrist to start position
-           wrist.setPosition(.5);
-           elbow.setPosition(.65);
-       }catch (Exception e){
 
-       }
+            //Set wrist to start position
+            //wrist.setPosition(.5);
+            //elbow.setPosition(.65);
+        }catch (Exception e){
+
+        }
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -101,9 +107,10 @@ public class RobotTeleopTank_Iterative extends OpMode {
 
         // Define and initialize ALL installed servos.
 
-
+        //Setting the different things on the robot
+        robot.setDriveTrain(new TankDrive("left", "right"));
         // Send telemetry message to signify robot waiting;
-        telemetry.addData(">", "Robot Ready.  Press START.");    //
+        telemetry.addData(">", "Robot Ready.  Press START.");
     }
 
 
@@ -111,39 +118,50 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public void init_loop() {
     }
 
-    
+
     @Override
     public void start() {
     }
 
-    
+
     @Override
     public void loop() {
-        double leftGP1;
-        double rightGP1;
+        double xGP1Left;
+        double yGP1Left;
+
+        double xGP1Right;
+        double yGP1Right;
 
         double leftGP2;
         double rightGP2;
 
-     
-        leftGP1 = -gamepad1.left_stick_y;
-        rightGP1 = -gamepad1.right_stick_y;
+
+        xGP1Left = gamepad1.left_stick_x * .75;
+        yGP1Left = gamepad1.left_stick_y;
+
+        xGP1Right = gamepad1.right_stick_x * .375;
+        yGP1Right = gamepad1.right_stick_y * .5;
 
         leftGP2 = gamepad2.left_stick_y;
         rightGP2 = gamepad2.right_stick_y;
 
-        leftDrive.setPower(leftGP1);
-        rightDrive.setPower(rightGP1);
+        robot.move(xGP1Left, yGP1Left);
+        if((xGP1Left >= -.01 || xGP1Right <= .01) && (yGP1Left >= -.01 || yGP1Right <= .01)){
+            robot.move(xGP1Right, yGP1Right);
+        }
+
+        //leftDrive.setPower(leftGP1);
+        //rightDrive.setPower(rightGP1);
 
         pivot.setPower(leftGP2);
         slide.setPower(rightGP2);
 
-       //Gamepad 2 controls
+        //Gamepad 2 controls
 
         if (gamepad2.dpad_left){
             //wrist.setPosition(0);
             wrist.setPosition(wrist.getPosition()-.001);
-            }
+        }
         else if (gamepad2.dpad_right) {
             //wrist.setPosition(1);
             wrist.setPosition(wrist.getPosition() + .001);
@@ -158,20 +176,20 @@ public class RobotTeleopTank_Iterative extends OpMode {
             pivot.setPower(0.0);
          */
         if (gamepad2.dpad_up){
-            elbow.setPosition(elbow.getPosition()-.001);
-        }
-        else if (gamepad2.dpad_down) {
             elbow.setPosition(elbow.getPosition() + .001);
         }
+        else if (gamepad2.dpad_down) {
+            elbow.setPosition(elbow.getPosition() - .001);
+        }
 
 
-        if (gamepad2.y)
+        /*if (gamepad2.y)
             slide.setPower(ARM_UP_POWER);
         else if (gamepad2.a)
             slide.setPower(ARM_DOWN_POWER);
         else
             slide.setPower(0.0);
-
+        */
 
         if (gamepad2.b)
             intake.setPower(1);
@@ -180,11 +198,23 @@ public class RobotTeleopTank_Iterative extends OpMode {
         else
             intake.setPower(0);
 
-        
+        if(gamepad2.left_bumper){
+            wrist.setPosition(.5);
+            elbow.setPosition(.65);
+        } else if (gamepad2.right_bumper) {
+            wrist.setPosition(0);
+            elbow.setPosition(1);
+            //while(elbow.getPosition() < 1){
+            //    elbow.setPosition(elbow.getPosition() + .001);
+            //}
+
+        }
+
     }
 
 
     @Override
     public void stop() {
     }
+
 }
