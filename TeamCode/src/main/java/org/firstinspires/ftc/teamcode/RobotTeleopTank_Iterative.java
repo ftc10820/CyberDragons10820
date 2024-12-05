@@ -72,7 +72,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
 
     //"Building" the robot
-    Robot robot = new Robot();
+    Robot_DeepDive robot = new Robot_DeepDive("wrist", "pivot,", "LinearSlide", "intake", "elbow");
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -82,8 +82,8 @@ public class RobotTeleopTank_Iterative extends OpMode {
         try {
             wrist = hardwareMap.get(Servo.class, "wrist");
             pivot = hardwareMap.get(DcMotor.class, "pivot");
-            leftDrive = hardwareMap.get(DcMotor.class, "left");
-            rightDrive = hardwareMap.get(DcMotor.class, "right");
+            //leftDrive = hardwareMap.get(DcMotor.class, "left");
+            //rightDrive = hardwareMap.get(DcMotor.class, "right");
             slide = hardwareMap.get(DcMotor.class, "LinearSlide");
             intake = hardwareMap.get(CRServo.class, "intake");
             elbow = hardwareMap.get(Servo.class, "elbow");
@@ -132,8 +132,10 @@ public class RobotTeleopTank_Iterative extends OpMode {
         double xGP1Right;
         double yGP1Right;
 
-        double leftGP2;
-        double rightGP2;
+        double xGP2left;
+        double yGP2left;
+        double xGP2right;
+        double yGP2right;
 
 
         xGP1Left = gamepad1.left_stick_x * .75;
@@ -142,8 +144,10 @@ public class RobotTeleopTank_Iterative extends OpMode {
         xGP1Right = gamepad1.right_stick_x * .375;
         yGP1Right = gamepad1.right_stick_y * .5;
 
-        leftGP2 = gamepad2.left_stick_y;
-        rightGP2 = gamepad2.right_stick_y;
+        xGP2left = gamepad2.left_stick_x;
+        yGP2left = gamepad2.left_stick_y;
+        xGP2right = gamepad2.right_stick_x;
+        yGP2right = gamepad2.right_stick_y;
 
         robot.move(xGP1Left, yGP1Left);
         if((xGP1Left >= -.01 || xGP1Right <= .01) && (yGP1Left >= -.01 || yGP1Right <= .01)){
@@ -153,11 +157,37 @@ public class RobotTeleopTank_Iterative extends OpMode {
         //leftDrive.setPower(leftGP1);
         //rightDrive.setPower(rightGP1);
 
-        pivot.setPower(leftGP2);
-        slide.setPower(rightGP2);
+
+        robot.moveLinearSlide(yGP2right);
+        robot.verticalLinearSlide(xGP2right);
+        robot.moveGrabberTele(yGP2left);
+        robot.rotateGrabberTele(xGP2left);
 
         //Gamepad 2 controls
 
+
+
+        if (gamepad2.b)
+            robot.intake(1);
+        else if (gamepad2.x)
+            robot.intake(-1);
+        else
+            robot.intake(0);
+
+        if(gamepad2.left_bumper){
+            robot.rotateGrabber(.5);
+            robot.moveGrabber(.65);
+            //wrist.setPosition(.5);
+            //elbow.setPosition(.65);
+        } else if (gamepad2.right_bumper) {
+            robot.rotateGrabber(0);
+            robot.moveGrabber(1);
+            //wrist.setPosition(0);
+            //elbow.setPosition(1);
+        }
+
+        /*
+        MAY NEED TO REVIST IN THE FUTURE
         if (gamepad2.dpad_left){
             //wrist.setPosition(0);
             wrist.setPosition(wrist.getPosition()-.001);
@@ -168,47 +198,13 @@ public class RobotTeleopTank_Iterative extends OpMode {
         }
 
 
-        /*if (gamepad2.dpad_up)
-            pivot.setPower(ARM_UP_POWER);
-        else if (gamepad2.dpad_down)
-            pivot.setPower(ARM_DOWN_POWER);
-        else
-            pivot.setPower(0.0);
-         */
         if (gamepad2.dpad_up){
             elbow.setPosition(elbow.getPosition() + .001);
         }
         else if (gamepad2.dpad_down) {
             elbow.setPosition(elbow.getPosition() - .001);
         }
-
-
-        /*if (gamepad2.y)
-            slide.setPower(ARM_UP_POWER);
-        else if (gamepad2.a)
-            slide.setPower(ARM_DOWN_POWER);
-        else
-            slide.setPower(0.0);
         */
-
-        if (gamepad2.b)
-            intake.setPower(1);
-        else if (gamepad2.x)
-            intake.setPower(-1);
-        else
-            intake.setPower(0);
-
-        if(gamepad2.left_bumper){
-            wrist.setPosition(.5);
-            elbow.setPosition(.65);
-        } else if (gamepad2.right_bumper) {
-            wrist.setPosition(0);
-            elbow.setPosition(1);
-            //while(elbow.getPosition() < 1){
-            //    elbow.setPosition(elbow.getPosition() + .001);
-            //}
-
-        }
 
     }
 
