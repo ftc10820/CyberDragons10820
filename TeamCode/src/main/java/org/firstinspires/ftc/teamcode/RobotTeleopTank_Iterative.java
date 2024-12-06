@@ -54,6 +54,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
 
 
     /* Declare OpMode members. */
+    /*
     public DcMotor leftDrive = null;
     public Servo wrist = null;
     public DcMotor rightDrive = null;
@@ -68,8 +69,10 @@ public class RobotTeleopTank_Iterative extends OpMode {
         return pivot;
     }
 
+
     public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
     public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
+     */
 
     //"Building" the robot
     Robot_DeepDive robot = new Robot_DeepDive("wrist", "pivot,", "LinearSlide", "intake", "elbow");
@@ -79,6 +82,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
     @Override
     public void init() {
         // Define and Initialize Motors
+        /*
         try {
             wrist = hardwareMap.get(Servo.class, "wrist");
             pivot = hardwareMap.get(DcMotor.class, "pivot");
@@ -88,18 +92,19 @@ public class RobotTeleopTank_Iterative extends OpMode {
             intake = hardwareMap.get(CRServo.class, "intake");
             elbow = hardwareMap.get(Servo.class, "elbow");
 
-
             //Set wrist to start position
             //wrist.setPosition(.5);
             //elbow.setPosition(.65);
         }catch (Exception e){
 
         }
+
+         */
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // If there are encoders connected, switch to RUN_USING_ENCODER mode for greater accuracy
         // leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -165,8 +170,6 @@ public class RobotTeleopTank_Iterative extends OpMode {
 
         //Gamepad 2 controls
 
-
-
         if (gamepad2.b)
             robot.intake(1);
         else if (gamepad2.x)
@@ -187,7 +190,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
         }
 
         /*
-        MAY NEED TO REVIST IN THE FUTURE
+        MAY NEED TO REVISIT IN THE FUTURE
         if (gamepad2.dpad_left){
             //wrist.setPosition(0);
             wrist.setPosition(wrist.getPosition()-.001);

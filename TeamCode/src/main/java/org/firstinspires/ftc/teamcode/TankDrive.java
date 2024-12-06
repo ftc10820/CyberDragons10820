@@ -14,6 +14,9 @@ public class TankDrive implements Drivetrain{
     public TankDrive (String leftMotor, String righMotor){
         left = hardwareMap.get(DcMotor.class, leftMotor);
         right = hardwareMap.get(DcMotor.class, righMotor);
+
+        left.setDirection(DcMotor.Direction.FORWARD);
+        right.setDirection(DcMotor.Direction.REVERSE);
     }
 
     /* prevent the use of a no argument constructor
