@@ -29,9 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
@@ -48,7 +51,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Robot: Teleop Tank (Object Oriented Test)", group="Robot")
+@TeleOp(name="Robot: Mechanic Drive Tank (Object Oriented Test)", group="Robot")
 
 public class RobotTeleopTank_Iterative extends OpMode {
 
@@ -75,7 +78,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
      */
 
     //"Building" the robot
-    Robot_DeepDive robot = new Robot_DeepDive("wrist", "pivot,", "LinearSlide", "intake", "elbow");
+    Robot_DeepDive robot;
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -113,7 +116,8 @@ public class RobotTeleopTank_Iterative extends OpMode {
         // Define and initialize ALL installed servos.
 
         //Setting the different things on the robot
-        robot.setDriveTrain(new TankDrive("left", "right"));
+        robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"));
+        robot.setDriveTrain(new MecanumDrivetrain(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight")));
         // Send telemetry message to signify robot waiting;
         telemetry.addData(">", "Robot Ready.  Press START.");
     }
@@ -143,11 +147,11 @@ public class RobotTeleopTank_Iterative extends OpMode {
         double yGP2right;
 
 
-        xGP1Left = gamepad1.left_stick_x * .75;
+        xGP1Left = gamepad1.left_stick_x;
         yGP1Left = gamepad1.left_stick_y;
 
-        xGP1Right = gamepad1.right_stick_x * .375;
-        yGP1Right = gamepad1.right_stick_y * .5;
+        xGP1Right = gamepad1.right_stick_x ;
+        yGP1Right = gamepad1.right_stick_y;
 
         xGP2left = gamepad2.left_stick_x;
         yGP2left = gamepad2.left_stick_y;
@@ -155,9 +159,7 @@ public class RobotTeleopTank_Iterative extends OpMode {
         yGP2right = gamepad2.right_stick_y;
 
         robot.move(xGP1Left, yGP1Left);
-        if((xGP1Left >= -.01 || xGP1Right <= .01) && (yGP1Left >= -.01 || yGP1Right <= .01)){
-            robot.move(xGP1Right, yGP1Right);
-        }
+        robot.move(xGP1Right, yGP1Right);
 
         //leftDrive.setPower(leftGP1);
         //rightDrive.setPower(rightGP1);

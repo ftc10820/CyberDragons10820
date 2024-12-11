@@ -12,12 +12,12 @@ public class Robot_DeepDive extends RobotGeneric {
     DcMotor linearSlide;
     CRServo intake;
     Servo elbow;
-    public Robot_DeepDive(String Wrist, String Pivot, String LinearSlide, String Intake, String Elbow){
-        wrist = hardwareMap.get(Servo.class, Wrist);
-        pivot = hardwareMap.get(DcMotor.class, Pivot);
-        linearSlide = hardwareMap.get(DcMotor.class, LinearSlide);
-        intake = hardwareMap.get(CRServo.class, Intake);
-        elbow = hardwareMap.get(Servo.class, Elbow);
+    public Robot_DeepDive(Servo Wrist, DcMotor Pivot, DcMotor LinearSlide, CRServo Intake, Servo Elbow){
+        wrist = Wrist;
+        pivot = Pivot;
+        linearSlide = LinearSlide;
+        intake = Intake;
+        elbow = Elbow;
     }
     private Robot_DeepDive(){
 

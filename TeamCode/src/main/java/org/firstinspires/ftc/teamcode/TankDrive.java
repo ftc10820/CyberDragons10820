@@ -40,6 +40,7 @@ public class TankDrive implements Drivetrain{
         left.setPower(Math.max(-1,  Math.min(1, (y + x))));
         right.setPower(Math.max(-1,  Math.min(1, (y - x))));
     }
+
     /*
      * Listen to only X,
      */
