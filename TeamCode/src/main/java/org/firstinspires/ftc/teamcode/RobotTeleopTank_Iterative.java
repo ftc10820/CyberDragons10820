@@ -29,9 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
@@ -48,12 +51,13 @@ import com.qualcomm.robotcore.hardware.CRServo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Robot: Teleop Tank", group="Robot")
+@TeleOp(name="Robot: Mechanic Drive Tank (Object Oriented Test)", group="Robot")
 
 public class RobotTeleopTank_Iterative extends OpMode {
 
 
     /* Declare OpMode members. */
+    /*
     public DcMotor leftDrive = null;
     public Servo wrist = null;
     public DcMotor rightDrive = null;
@@ -61,42 +65,49 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public DcMotor pivot = null;
     public CRServo intake = null;
     public Servo elbow = null;
- 
+
     double clawOffset = 0;
 
     public DcMotor getPivot() {
         return pivot;
     }
 
+
     public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
     public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
+     */
 
+    //"Building" the robot
+    Robot_DeepDive robot;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
     public void init() {
         // Define and Initialize Motors
-       try {
-           wrist = hardwareMap.get(Servo.class, "wrist");
-           pivot = hardwareMap.get(DcMotor.class, "pivot");
-           leftDrive = hardwareMap.get(DcMotor.class, "left");
-           rightDrive = hardwareMap.get(DcMotor.class, "right");
-           slide = hardwareMap.get(DcMotor.class, "LinearSlide");
-           intake = hardwareMap.get(CRServo.class, "intake");
-           elbow = hardwareMap.get(Servo.class, "elbow");
+        /*
+        try {
+            wrist = hardwareMap.get(Servo.class, "wrist");
+            pivot = hardwareMap.get(DcMotor.class, "pivot");
+            //leftDrive = hardwareMap.get(DcMotor.class, "left");
+            //rightDrive = hardwareMap.get(DcMotor.class, "right");
+            slide = hardwareMap.get(DcMotor.class, "LinearSlide");
+            intake = hardwareMap.get(CRServo.class, "intake");
+            elbow = hardwareMap.get(Servo.class, "elbow");
 
-           //Set wrist to start position
-           //wrist.setPosition(.5);
-           //elbow.setPosition(.65);
-       }catch (Exception e){
+            //Set wrist to start position
+            //wrist.setPosition(.5);
+            //elbow.setPosition(.65);
+        }catch (Exception e){
 
-       }
+        }
+
+         */
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // If there are encoders connected, switch to RUN_USING_ENCODER mode for greater accuracy
         // leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -104,9 +115,11 @@ public class RobotTeleopTank_Iterative extends OpMode {
 
         // Define and initialize ALL installed servos.
 
-
+        //Setting the different things on the robot
+        robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"));
+        robot.setDriveTrain(new MecanumDrivetrain(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight")));
         // Send telemetry message to signify robot waiting;
-        telemetry.addData(">", "Robot Ready.  Press START.");    //
+        telemetry.addData(">", "Robot Ready.  Press START.");
     }
 
 
@@ -114,12 +127,12 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public void init_loop() {
     }
 
-    
+
     @Override
     public void start() {
     }
 
-    
+
     @Override
     public void loop() {
         double xGP1Left;
@@ -128,83 +141,75 @@ public class RobotTeleopTank_Iterative extends OpMode {
         double xGP1Right;
         double yGP1Right;
 
-        double leftGP2;
-        double rightGP2;
+        double xGP2left;
+        double yGP2left;
+        double xGP2right;
+        double yGP2right;
 
 
-        xGP1Left = gamepad1.left_stick_x * .75;
+        xGP1Left = gamepad1.left_stick_x;
         yGP1Left = gamepad1.left_stick_y;
 
-        xGP1Right = gamepad1.right_stick_x * .375;
-        yGP1Right = gamepad1.right_stick_y * .5;
+        xGP1Right = gamepad1.right_stick_x ;
+        yGP1Right = gamepad1.right_stick_y;
 
-        leftGP2 = gamepad2.left_stick_y;
-        rightGP2 = gamepad2.right_stick_y;
+        xGP2left = gamepad2.left_stick_x;
+        yGP2left = gamepad2.left_stick_y;
+        xGP2right = gamepad2.right_stick_x;
+        yGP2right = gamepad2.right_stick_y;
 
-        move(xGP1Left, yGP1Left);
-        if((xGP1Left >= -.01 || xGP1Right <= .01) && (yGP1Left >= -.01 || yGP1Right <= .01)){
-            move(xGP1Right, yGP1Right);
-        }
+        robot.move(xGP1Left, yGP1Left);
+        robot.move(xGP1Right, yGP1Right);
 
         //leftDrive.setPower(leftGP1);
         //rightDrive.setPower(rightGP1);
 
-        pivot.setPower(leftGP2);
-        slide.setPower(rightGP2);
 
-       //Gamepad 2 controls
+        robot.moveLinearSlide(yGP2right);
+        robot.verticalLinearSlide(xGP2right);
+        robot.moveGrabberTele(yGP2left);
+        robot.rotateGrabberTele(xGP2left);
 
+        //Gamepad 2 controls
+
+        if (gamepad2.b)
+            robot.intake(1);
+        else if (gamepad2.x)
+            robot.intake(-1);
+        else
+            robot.intake(0);
+
+        if(gamepad2.left_bumper){
+            robot.rotateGrabber(.5);
+            robot.moveGrabber(.65);
+            //wrist.setPosition(.5);
+            //elbow.setPosition(.65);
+        } else if (gamepad2.right_bumper) {
+            robot.rotateGrabber(0);
+            robot.moveGrabber(1);
+            //wrist.setPosition(0);
+            //elbow.setPosition(1);
+        }
+
+        /*
+        MAY NEED TO REVISIT IN THE FUTURE
         if (gamepad2.dpad_left){
             //wrist.setPosition(0);
             wrist.setPosition(wrist.getPosition()-.001);
-            }
+        }
         else if (gamepad2.dpad_right) {
             //wrist.setPosition(1);
             wrist.setPosition(wrist.getPosition() + .001);
         }
 
 
-        /*if (gamepad2.dpad_up)
-            pivot.setPower(ARM_UP_POWER);
-        else if (gamepad2.dpad_down)
-            pivot.setPower(ARM_DOWN_POWER);
-        else
-            pivot.setPower(0.0);
-         */
         if (gamepad2.dpad_up){
             elbow.setPosition(elbow.getPosition() + .001);
         }
         else if (gamepad2.dpad_down) {
             elbow.setPosition(elbow.getPosition() - .001);
         }
-
-
-        /*if (gamepad2.y)
-            slide.setPower(ARM_UP_POWER);
-        else if (gamepad2.a)
-            slide.setPower(ARM_DOWN_POWER);
-        else
-            slide.setPower(0.0);
         */
-
-        if (gamepad2.b)
-            intake.setPower(1);
-        else if (gamepad2.x)
-            intake.setPower(-1);
-        else
-            intake.setPower(0);
-
-        if(gamepad2.left_bumper){
-            wrist.setPosition(.5);
-            elbow.setPosition(.65);
-        } else if (gamepad2.right_bumper) {
-            wrist.setPosition(0);
-            elbow.setPosition(1);
-            //while(elbow.getPosition() < 1){
-            //    elbow.setPosition(elbow.getPosition() + .001);
-            //}
-
-        }
 
     }
 
@@ -213,9 +218,4 @@ public class RobotTeleopTank_Iterative extends OpMode {
     public void stop() {
     }
 
-    public void move(double x, double y) {
-        y = -y;
-        leftDrive.setPower(Math.max(-1,  Math.min(1, (y + x))));
-        rightDrive.setPower(Math.max(-1,  Math.min(1, (y - x))));
-    }
 }

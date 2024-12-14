@@ -3,34 +3,19 @@ package org.firstinspires.ftc.teamcode;
 
 public interface Drivetrain {
 
-    //FORWARD
+    public void move(double x, double y);
+    /*
+    * If y = 0, the all motors = x
+    * If x = 0, set the top left/bottom right to y and bottom left/top right to -y
+    * If above is false and +x & +y then top left and bottom right = average of x + y
+    * If above is false and +x & -y then bottom left and top right = average of -(x + abs(y))
+    * If above is false and -x & +y
+    * If above is false and -x & -y
+    * If all is false then the robot shouldn't move (x = 0, y = 0)
+    */
 
-    public void forward();
-    public void forward(double speed);
-    public void forward(double speed, int time);
-    public void forward(float distance);
-
-    //BACKWARDS
-
-    public void backward();
-    public void backward(double speed);
-    public void backward(double speed, int time);
-    //Move backwards a distance (using roadrunner)
-    public void backward(float distance);
-
-    //LEFT
-
-    public void left();
-    public void left(double speed);
-    public void left(double speed, int time);
-    public void left(float distance);
-
-    //RIGHT
-
-    public void right();
-    public void right(double speed);
-    public void right(double speed, int time);
-    public void right(float distance);
+    public void rotate(double x, double y);
+    public void stop();
 }
 
 
