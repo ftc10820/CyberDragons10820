@@ -16,20 +16,34 @@ public class MecanumDrivetrain implements Drivetrain{
     public DcMotorEx backLeft;
     public DcMotorEx backRight;
 
+
     //When you call new TankDrive it activates this, the constructor first, you can overload it too.
     //Initiates the movement motors
 
     //TODO: Figure out deviceName parameter
-    public MecanumDrivetrain(DcMotorEx FrontLeft, DcMotorEx FrontRight, DcMotorEx BackLeft, DcMotorEx BackRight){
-        frontLeft = FrontLeft;
-        frontRight = FrontRight;
-        backLeft = BackLeft;
-        backRight = BackRight;
+    public MecanumDrivetrain(boolean brakeOn, DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx backLeft, DcMotorEx backRight){
+        this.frontLeft = frontLeft;
+        this.frontRight = frontRight;
+        this.backLeft = backLeft;
+        this.backRight = backRight;
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
+        this.frontRight.setDirection(DcMotorEx.Direction.REVERSE);
+        this.backRight.setDirection(DcMotorEx.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotorEx.Direction.FORWARD);
+        this.backLeft.setDirection(DcMotorEx.Direction.FORWARD);
 
-        frontRight.setDirection(DcMotorEx.Direction.REVERSE);
-        backRight.setDirection(DcMotorEx.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorEx.Direction.FORWARD);
-        backLeft.setDirection(DcMotorEx.Direction.FORWARD);
+        if(brakeOn){
+            this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+
+    }
+
+    public MecanumDrivetrain(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx backLeft, DcMotorEx backRight){
+        this(false, frontLeft, frontRight, backLeft, backRight);
     }
     private MecanumDrivetrain(){
 
@@ -82,5 +96,11 @@ public class MecanumDrivetrain implements Drivetrain{
         frontRight.setPower(0);
         backLeft.setPower(0);
         backRight.setPower(0);
+    }
+
+    public void setBrake(boolean brakeOn){
+        if(brakeOn){
+
+        }
     }
 }

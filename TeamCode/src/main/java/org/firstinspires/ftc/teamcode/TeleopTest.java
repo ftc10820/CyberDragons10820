@@ -29,8 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -53,29 +51,8 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 @TeleOp(name="Robot: Mechanic Drive Tank (Object Oriented Test)", group="Robot")
 
-public class RobotTeleopTank_Iterative extends OpMode {
+public class TeleopTest extends OpMode {
 
-
-    /* Declare OpMode members. */
-    /*
-    public DcMotor leftDrive = null;
-    public Servo wrist = null;
-    public DcMotor rightDrive = null;
-    public DcMotor slide = null;
-    public DcMotor pivot = null;
-    public CRServo intake = null;
-    public Servo elbow = null;
-
-    double clawOffset = 0;
-
-    public DcMotor getPivot() {
-        return pivot;
-    }
-
-
-    public static final double ARM_UP_POWER = 1;   // Run arm motor up at 100% power
-    public static final double ARM_DOWN_POWER = -1;   // Run arm motor down at -20% power
-     */
 
     //"Building" the robot
     Robot_DeepDive robot;
@@ -84,52 +61,12 @@ public class RobotTeleopTank_Iterative extends OpMode {
      */
     @Override
     public void init() {
-        // Define and Initialize Motors
-        /*
-        try {
-            wrist = hardwareMap.get(Servo.class, "wrist");
-            pivot = hardwareMap.get(DcMotor.class, "pivot");
-            //leftDrive = hardwareMap.get(DcMotor.class, "left");
-            //rightDrive = hardwareMap.get(DcMotor.class, "right");
-            slide = hardwareMap.get(DcMotor.class, "LinearSlide");
-            intake = hardwareMap.get(CRServo.class, "intake");
-            elbow = hardwareMap.get(Servo.class, "elbow");
-
-            //Set wrist to start position
-            //wrist.setPosition(.5);
-            //elbow.setPosition(.65);
-        }catch (Exception e){
-
-        }
-
-         */
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left and right sticks forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        //leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        //rightDrive.setDirection(DcMotor.Direction.REVERSE);
-
-        // If there are encoders connected, switch to RUN_USING_ENCODER mode for greater accuracy
-        // leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        // rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        // Define and initialize ALL installed servos.
 
         //Setting the different things on the robot
         robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"));
         robot.setDriveTrain(new MecanumDrivetrain(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight")));
         // Send telemetry message to signify robot waiting;
         telemetry.addData(">", "Robot Ready.  Press START.");
-    }
-
-
-    @Override
-    public void init_loop() {
-    }
-
-
-    @Override
-    public void start() {
     }
 
 
@@ -161,32 +98,28 @@ public class RobotTeleopTank_Iterative extends OpMode {
         robot.move(xGP1Left, yGP1Left);
         robot.move(xGP1Right, yGP1Right);
 
-        //leftDrive.setPower(leftGP1);
-        //rightDrive.setPower(rightGP1);
-
-
-        robot.moveLinearSlide(yGP2right);
-        robot.verticalLinearSlide(xGP2right);
-        robot.moveGrabberTele(yGP2left);
-        robot.rotateGrabberTele(xGP2left);
+        robot.extendArm(yGP2right);
+        robot.liftArm(xGP2right);
+        robot.liftGrabberRelative(yGP2left);
+        robot.rotateGrabberRelative(xGP2left);
 
         //Gamepad 2 controls
 
         if (gamepad2.b)
-            robot.intake(1);
+            robot.intake();
         else if (gamepad2.x)
-            robot.intake(-1);
+            robot.outtake();
         else
-            robot.intake(0);
+            robot.stopIntake();
 
         if(gamepad2.left_bumper){
             robot.rotateGrabber(.5);
-            robot.moveGrabber(.65);
+            robot.liftGrabber(.65);
             //wrist.setPosition(.5);
             //elbow.setPosition(.65);
         } else if (gamepad2.right_bumper) {
             robot.rotateGrabber(0);
-            robot.moveGrabber(1);
+            robot.liftGrabber(1);
             //wrist.setPosition(0);
             //elbow.setPosition(1);
         }

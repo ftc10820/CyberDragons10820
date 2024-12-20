@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
@@ -48,23 +49,19 @@ public class Basic_Auto extends LinearOpMode {
 
 
     /* Declare OpMode members. */
-    public DcMotor leftDrive = null;
-    public DcMotor rightDrive = null;
+    public Robot_DeepDive robot = null;
 
 
     public void runOpMode() throws InterruptedException {
-        leftDrive = hardwareMap.get(DcMotor.class, "left");
-        rightDrive = hardwareMap.get(DcMotor.class, "right");
 
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"));
+        robot.setDriveTrain(new MecanumDrivetrain(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight")));
+        // Send telemetry message to signify robot waiting;
 
         waitForStart();
         //sleep(20000);
-        leftDrive.setPower(.75);
-        rightDrive.setPower(.75);
+        robot.move(0, .75);
         sleep(1000);
-        rightDrive.setPower(0);
-        leftDrive.setPower(0);
+        robot.stop();
     }
 }
