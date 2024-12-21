@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 /*
  * This OpMode executes a Tank Drive control TeleOp a direct drive robot
  * The code is structured as an Iterative OpMode
@@ -49,7 +51,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Robot: Mechanic Drive Tank (Object Oriented Test)", group="Robot")
+@TeleOp(name="Robot: Object Oriented Test", group="Robot")
 
 public class TeleopTest extends OpMode {
 
@@ -63,7 +65,7 @@ public class TeleopTest extends OpMode {
     public void init() {
 
         //Setting the different things on the robot
-        robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"));
+        robot = new Robot_DeepDive(hardwareMap.get(Servo.class, "wrist"), hardwareMap.get(DcMotor.class, "pivot"), hardwareMap.get(DcMotor.class, "arm"), hardwareMap.get(CRServo.class, "intake"), hardwareMap.get(Servo.class, "elbow"), telemetry);
         robot.setDriveTrain(new MecanumDrivetrain(hardwareMap.get(DcMotorEx.class, "frontLeft"), hardwareMap.get(DcMotorEx.class, "frontRight"), hardwareMap.get(DcMotorEx.class, "backLeft"), hardwareMap.get(DcMotorEx.class, "backRight")));
         // Send telemetry message to signify robot waiting;
         telemetry.addData(">", "Robot Ready.  Press START.");
@@ -96,7 +98,7 @@ public class TeleopTest extends OpMode {
         yGP2right = gamepad2.right_stick_y;
 
         robot.move(xGP1Left, yGP1Left);
-        robot.move(xGP1Right, yGP1Right);
+        robot.rotate(xGP1Right, yGP1Right);
 
         robot.extendArm(yGP2right);
         robot.liftArm(xGP2right);

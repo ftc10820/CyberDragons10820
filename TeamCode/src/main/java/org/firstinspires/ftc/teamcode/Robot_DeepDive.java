@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.sax.StartElementListener;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Robot_DeepDive extends RobotGeneric {
     Servo wrist;
@@ -10,7 +14,9 @@ public class Robot_DeepDive extends RobotGeneric {
     DcMotor linearSlide;
     CRServo intake;
     Servo elbow;
-    public Robot_DeepDive(Servo wrist, DcMotor pivot, DcMotor linearSlide, CRServo intake, Servo elbow){
+    Telemetry telemetry;
+
+    public Robot_DeepDive(Servo wrist, DcMotor pivot, DcMotor linearSlide, CRServo intake, Servo elbow, Telemetry telemetry){
         this.wrist = wrist;
         this.pivot = pivot;
         this.linearSlide = linearSlide;
@@ -19,6 +25,8 @@ public class Robot_DeepDive extends RobotGeneric {
 
         this.pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.linearSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        this.telemetry = telemetry;
     }
     private Robot_DeepDive(){
 
@@ -46,7 +54,10 @@ public class Robot_DeepDive extends RobotGeneric {
         wrist.setPosition(position);
     }
     public void liftGrabberRelative(double y){//"elbow"
-        elbow.setPosition(elbow.getPosition() + (y/1000));
+        elbow.setPosition(elbow.getPosition() + (-y/1000));
+        telemetry.addData("Elbow Data: ", elbow.getPosition());
+        telemetry.addData("Wrist Data: ", wrist.getPosition());
+
     }
     public void liftGrabber(double position){//"elbow"
         elbow.setPosition(position);

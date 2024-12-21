@@ -84,10 +84,10 @@ public class MecanumDrivetrain implements Drivetrain{
      */
     @Override
     public void rotate(double x, double y) {
-        frontLeft.setPower(x);
-        backLeft.setPower(x);
-        frontRight.setPower(-x);
-        backRight.setPower(-x);
+        frontLeft.setPower(-x);
+        backLeft.setPower(-x);
+        frontRight.setPower(x);
+        backRight.setPower(x);
     }
 
     @Override
