@@ -29,6 +29,11 @@ public class mecanum_drive_opmode extends LinearOpMode {
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        pivot = hardwareMap.get(DcMotor.class, "pivot");
+        slide = hardwareMap.get(DcMotor.class, "arm");
+        wrist = hardwareMap.get(Servo.class, "wrist");
+        elbow = hardwareMap.get(Servo.class, "elbow");
+        intake = hardwareMap.get(CRServo.class, "intake");
 
         // this ensures that all wheels go forward when applying positive power
         frontRight.setDirection(DcMotorEx.Direction.FORWARD);
@@ -40,6 +45,8 @@ public class mecanum_drive_opmode extends LinearOpMode {
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
 
@@ -218,10 +225,10 @@ public class mecanum_drive_opmode extends LinearOpMode {
     public Servo elbow = null;
 
     // drive train motors
-    public DcMotorEx frontLeft;
-    public DcMotorEx frontRight;
-    public DcMotorEx backLeft;
-    public DcMotorEx backRight;
+    public DcMotor frontLeft;
+    public DcMotor frontRight;
+    public DcMotor backLeft;
+    public DcMotor backRight;
 
     // there are specific ways that the drive power is calculated based on automations
     double frontLeftPower = 0.0, backLeftPower = 0.0, frontRightPower = 0.0, backRightPower = 0.0 ;
@@ -274,6 +281,7 @@ public class mecanum_drive_opmode extends LinearOpMode {
             intake.setPower(1);
         else if (gamepad2.x)
             intake.setPower(-1);
+
         else
             intake.setPower(0);
 
