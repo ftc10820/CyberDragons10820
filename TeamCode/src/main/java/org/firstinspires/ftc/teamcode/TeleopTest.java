@@ -72,8 +72,8 @@ public class TeleopTest extends OpMode {
     }
 
 
-    @Override
-    public void loop() {
+        @Override
+        public void loop() {
         double xGP1Left;
         double yGP1Left;
 
@@ -102,8 +102,8 @@ public class TeleopTest extends OpMode {
 
         robot.extendArm(yGP2right);
         robot.liftArm(xGP2right);
-        robot.liftGrabberRelative(yGP2left);
-        robot.rotateGrabberRelative(xGP2left);
+        //robot.liftGrabberRelative(yGP2left);
+        //robot.rotateGrabberRelative(xGP2left);
 
         //Gamepad 2 controls
 
@@ -126,25 +126,25 @@ public class TeleopTest extends OpMode {
             //elbow.setPosition(1);
         }
 
-        /*
-        MAY NEED TO REVISIT IN THE FUTURE
+
+        //MAY NEED TO REVISIT IN THE FUTURE
         if (gamepad2.dpad_left){
             //wrist.setPosition(0);
-            wrist.setPosition(wrist.getPosition()-.001);
+            robot.rotateGrabberRelative(1);
         }
         else if (gamepad2.dpad_right) {
             //wrist.setPosition(1);
-            wrist.setPosition(wrist.getPosition() + .001);
+            robot.rotateGrabberRelative(-1);
         }
 
 
         if (gamepad2.dpad_up){
-            elbow.setPosition(elbow.getPosition() + .001);
+            robot.liftGrabberRelative(1);
         }
         else if (gamepad2.dpad_down) {
-            elbow.setPosition(elbow.getPosition() - .001);
+            robot.liftGrabberRelative(-1);
         }
-        */
+
 
     }
 

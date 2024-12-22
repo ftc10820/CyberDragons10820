@@ -92,15 +92,6 @@ public class MecanumDrivetrain implements Drivetrain{
 
     @Override
     public void stop() {
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
-    }
-
-    public void setBrake(boolean brakeOn){
-        if(brakeOn){
-
-        }
+        move(0,0);
     }
 }
